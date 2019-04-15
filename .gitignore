@@ -58,6 +58,8 @@ workspace/.metadata
 workspace/.recommenders
 workspace/EE5616_1841792/bin/
 
+.vscode/
+
 # Java
 target/
 out/
