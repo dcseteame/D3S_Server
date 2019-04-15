@@ -1,0 +1,64 @@
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+*.lol
+
+## Bibliography auxiliary files:
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# Auxiliary files from other packages:
+# algorithms
+*.alg
+*.loa
+
+# glossaries
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.glsdefs
+
+# makeidx
+*.idx
+*.ilg
+*.ind
+*.ist
+
+# TikZ & PGF
+*.dpth
+*.md5
+*.auxlock
+
+# Eclipse
+workspace/.metadata
+workspace/.recommenders
+workspace/EE5616_1841792/bin/
+
+# Java
+target/
+out/
+*.class
