@@ -58,9 +58,18 @@ workspace/.metadata
 workspace/.recommenders
 workspace/EE5616_1841792/bin/
 
+# VS Code
 .vscode/
 
 # Java
 target/
 out/
 *.class
+
+# Python
+__pycache__/
+*.pyc
+
+# Mac
+.DS_Store/
+
