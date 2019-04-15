@@ -7,7 +7,6 @@ from slave import Slave
 class Poll(threading.Thread):
 
     devListAct = []
-    slavesList = []
     deviceMap = {}
     URI = ""
     
@@ -36,7 +35,6 @@ class Poll(threading.Thread):
                 if device not in self.devListAct:
                     self.devListAct.append( device )
                     newSlave = Slave(self.URI, device[0], device[1])
-                    self.slavesList.append( newSlave )
                     self.deviceMap[device[0]] = newSlave
                     newSlave.start()
                     # create new slave
