@@ -5,6 +5,7 @@ import numpy as np
 import threading
 import time
 import merge
+import simulationInjection as sI
 
 window_size = 500 # milliseconds
 
@@ -30,6 +31,10 @@ class Slave(threading.Thread):
             measEntries = self.dataset["measurementEntries"]
 
             for i in range(self.datasetIdx, len(measEntries)):
+
+                if i == 0:
+                    sI.injectAccelData(measEntries[i])
+
                 EqInt = self.getQuakeIntegral(measEntries[i])
                 if EqInt > 0:
                     merge.addMeasurement(EqInt, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
@@ -59,13 +64,16 @@ class Slave(threading.Thread):
     
     def getQuakeIntegral(self, actDataset):
 
-        # if self.samplingrate == 0:
-        #     return 0
-        self.samplingrate = 60.0 # fix due to smartphone sensing framework
+        if self.samplingrate == 0:
+            return 0
+        #self.samplingrate = 60.0 # fix due to smartphone sensing framework
 
         x = np.array(actDataset["accelerationX"])
         y = np.array(actDataset["accelerationY"])
         z = np.array(actDataset["accelerationZ"])
+
+        if sum(x) == 0 and sum(y) == 0 and sum(z) == 0:
+            return 0
 
         xyz = abs(x) + abs(y) + abs(z)
 

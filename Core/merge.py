@@ -3,7 +3,7 @@ import requests
 import time
 import numpy as np
 
-PARAM_detectionVariance = 5
+PARAM_detectionVariance = 2
 
 currentTime = lambda: int(round(time.time() * 1000))
 
@@ -26,8 +26,8 @@ def addMeasurement(EqInt, Time, coordLong, coordLat):
     measEntries.append(entry)
 
     print("Measurement added: ")
-    print("Time: " + str(Time))
-    print("Coordinates: " + str(coordLong) + " / " + str(coordLat))
+    #print("Time: " + str(Time))
+    #print("Coordinates: " + str(coordLong) + " / " + str(coordLat))
     print("Intensity: " + str(EqInt))
 
 class Merge(threading.Thread):
@@ -39,36 +39,35 @@ class Merge(threading.Thread):
     
     def run(self):
         while True:
-
-            minEntries = 1
+            minEntries = 3  # TODO: set dynamically based on registered devices
 
             entriesToProcess = []
             for entry in measEntries:
-                if (currentTime() - entry.Time) < 5000:
+                # XXX: ignore time for debug reasons
+                #if (currentTime() - entry.Time) < 5000:
+                if True:
                     entriesToProcess.append(entry)
                 else:
                     measEntries.remove(entry)  # XXX: does it work?
             
             # calculate variance of EqInt, Lat, Long of each element of entriesToProcess
-            if len(entriesToProcess) > minEntries:
+            if len(entriesToProcess) >= minEntries:
                 EqIntMean = 0
                 for entry in entriesToProcess:
                     EqIntMean = EqIntMean + entry.EqInt
                 EqIntMean = EqIntMean / len(entriesToProcess)
 
-                print(EqIntMean)
-
                 EqIntVar = 0
                 for entry in entriesToProcess:
-                    print("entry.EqInt=")
-                    print(entry.EqInt)
-                    print("EqIntMean=")
-                    print(EqIntMean)
-                    EqIntVar = EqIntVar + np.sqrt(entry.EqInt - EqIntMean)
+                    print("entry.EqInt = " + str(entry.EqInt))
+                    print("EqIntMean = " + str(EqIntMean))
+                    EqIntVar = EqIntVar + np.sqrt(abs(entry.EqInt - EqIntMean))
                 EqIntVar = EqIntVar / len(entriesToProcess)
+                print("EqIntVar = " + str(EqIntVar))
 
                 if EqIntVar < PARAM_detectionVariance:
                     # earthquake!
+                    print("EARTHQUAKE!!!")
                     requests.get(self.URI + "/warnings?description=Earthquake")
 
                     # remove measurements that led to a warning

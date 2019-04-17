@@ -1,3 +1,5 @@
+import json
+
 SIMULATION = True
 
 data = []
@@ -6,17 +8,20 @@ index = 0
 for i in range(1,5):
     f = open("../Simulation/data" + str(i) + ".json", "r")
     tmp = f.read()
-    data.append(tmp)
+    data.append(json.loads(tmp))
     f.close()
 
 def injectAccelData(json_data):
+    global index
     if SIMULATION == False:
         return
     else:
-        json_data["accelerationX"] = data[index]["accelerationX"]
-        json_data["accelerationY"] = data[index]["accelerationY"]
-        json_data["accelerationZ"] = data[index]["accelerationZ"]
-        json_data["samplingRate"] = data[index]["samplingRate"]
+        actData = data[index]
+        #print(actData)
+        tmp = actData["accelerationX"]
+        json_data["accelerationX"] = tmp
+        json_data["accelerationY"] = actData["accelerationY"]
+        json_data["accelerationZ"] = actData["accelerationZ"]
         index = index + 1
         if index == 4:
             index = 0
