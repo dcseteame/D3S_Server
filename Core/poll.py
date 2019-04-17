@@ -7,7 +7,6 @@ from slave import Slave
 class Poll(threading.Thread):
 
     devListAct = []
-    slavesList = []
     deviceMap = {}
     URI = ""
     
@@ -35,14 +34,15 @@ class Poll(threading.Thread):
             for device in devListNew:
                 if device not in self.devListAct:
                     self.devListAct.append( device )
-                    newSlave = Slave(self.URI, device[0])
-                    self.slavesList.append( newSlave )
+                    newSlave = Slave(self.URI, device[0], device[1])
                     self.deviceMap[device[0]] = newSlave
                     newSlave.start()
                     # create new slave
             
             for device in self.devListAct:
                 if  device not in devListNew:
+                    removedDevice = self.deviceMap[device[0]]
+                    removedDevice.stop()
                     self.devListAct.remove(device)
                     # shut down slave
             
