@@ -31,8 +31,9 @@ class Slave(threading.Thread):
 
             for i in range(self.datasetIdx, len(measEntries)):
                 EqInt = self.getQuakeIntegral(measEntries[i])
-                merge.addMeasurement(EqInt, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
-                #print("New measurement: " + str(i) + " " + str(EqInt))
+                if EqInt > 0:
+                    merge.addMeasurement(EqInt, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
+                    #print("New measurement: " + str(i) + " " + str(EqInt))
 
             self.datasetIdx = len(measEntries)
 
@@ -58,8 +59,9 @@ class Slave(threading.Thread):
     
     def getQuakeIntegral(self, actDataset):
 
-        if self.samplingrate == 0:
-            return 0
+        # if self.samplingrate == 0:
+        #     return 0
+        self.samplingrate = 60.0 # fix due to smartphone sensing framework
 
         x = np.array(actDataset["accelerationX"])
         y = np.array(actDataset["accelerationY"])

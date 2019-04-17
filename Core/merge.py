@@ -60,6 +60,10 @@ class Merge(threading.Thread):
 
                 EqIntVar = 0
                 for entry in entriesToProcess:
+                    print("entry.EqInt=")
+                    print(entry.EqInt)
+                    print("EqIntMean=")
+                    print(EqIntMean)
                     EqIntVar = EqIntVar + np.sqrt(entry.EqInt - EqIntMean)
                 EqIntVar = EqIntVar / len(entriesToProcess)
 
