@@ -31,6 +31,8 @@ public class MainConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/devices/**", "/").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .csrf().disable();
     }
 }
