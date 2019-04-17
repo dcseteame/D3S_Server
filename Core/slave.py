@@ -6,7 +6,7 @@ import threading
 import time
 import merge
 
-window_size = 500
+window_size = 500 # milliseconds
 
 class Slave(threading.Thread):
 

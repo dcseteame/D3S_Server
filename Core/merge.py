@@ -40,15 +40,17 @@ class Merge(threading.Thread):
     def run(self):
         while True:
 
+            minEntries = 1
+
             entriesToProcess = []
             for entry in measEntries:
                 if (currentTime() - entry.Time) < 5000:
                     entriesToProcess.append(entry)
                 else:
-                    measEntries.remove(entry)  # TODO: was passiert hier?
+                    measEntries.remove(entry)  # XXX: does it work?
             
             # calculate variance of EqInt, Lat, Long of each element of entriesToProcess
-            if len(entriesToProcess) > 0:
+            if len(entriesToProcess) > minEntries:
                 EqIntMean = 0
                 for entry in entriesToProcess:
                     EqIntMean = EqIntMean + entry.EqInt
