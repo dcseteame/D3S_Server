@@ -12,7 +12,7 @@ public class Device {
 
     private long lastContact = System.currentTimeMillis();
 
-    private int samplingRate;
+    private int samplingRate = 60;
 
     private long latitude;
     private long longitude;
@@ -24,8 +24,11 @@ public class Device {
 
     }
 
-    public Device(String id) {
+    public Device(String id, int samplingRate, long latitude, long longitude) {
         this.id = id;
+        this.samplingRate = samplingRate;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getId() {

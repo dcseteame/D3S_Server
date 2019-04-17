@@ -11,8 +11,8 @@
     <groupId>uk.ac.brunel</groupId>
     <artifactId>d3s</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>palt</name>
-    <description>PALT Frontend</description>
+    <name>d3s</name>
+    <description>D3S Backend</description>
 
     <properties>
         <java.version>1.8</java.version>
