@@ -29,7 +29,7 @@ public class MainConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/devices", "/").permitAll()
                 .antMatchers("/devices/**", "/").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .httpBasic()
                 .and()

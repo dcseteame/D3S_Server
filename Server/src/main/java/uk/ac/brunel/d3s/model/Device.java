@@ -14,8 +14,8 @@ public class Device {
 
     private int samplingRate = 60;
 
-    private long latitude;
-    private long longitude;
+    private double latitude;
+    private double longitude;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MeasurementEntry> measurementEntries = new ArrayList<>();
@@ -24,7 +24,7 @@ public class Device {
 
     }
 
-    public Device(String id, int samplingRate, long latitude, long longitude) {
+    public Device(String id, int samplingRate, double latitude, double longitude) {
         this.id = id;
         this.samplingRate = samplingRate;
         this.latitude = latitude;
@@ -51,19 +51,19 @@ public class Device {
         this.samplingRate = samplingRate;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

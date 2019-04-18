@@ -14,12 +14,11 @@ public class MeasurementEntry {
 
     private long time;
 
-    private float[] accelerationX = new float[50];
-    private float[] accelerationY = new float[50];
-    private float[] accelerationZ = new float[50];
+    private float[] accelerationX;
+    private float[] accelerationY;
+    private float[] accelerationZ;
 
     public MeasurementEntry() {
-        time = System.nanoTime();
     }
 
     public long getTime() {
@@ -38,4 +37,19 @@ public class MeasurementEntry {
         return accelerationZ;
     }
 
+    public void setAccelerationX(float[] accelerationX) {
+        this.accelerationX = accelerationX;
+    }
+
+    public void setAccelerationY(float[] accelerationY) {
+        this.accelerationY = accelerationY;
+    }
+
+    public void setAccelerationZ(float[] accelerationZ) {
+        this.accelerationZ = accelerationZ;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
 }

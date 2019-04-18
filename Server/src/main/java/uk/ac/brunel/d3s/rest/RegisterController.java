@@ -22,8 +22,8 @@ public class RegisterController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register(@RequestParam(name = "samplingRate", defaultValue = "60") int samplingRate,
-                           @RequestParam(name = "latitude", defaultValue = "0") long latitude,
-                           @RequestParam(name = "longitude", defaultValue = "0") long longitude) {
+                           @RequestParam(name = "latitude", defaultValue = "0") double latitude,
+                           @RequestParam(name = "longitude", defaultValue = "0") double longitude) {
         String id = new UUID(new Random().nextInt(), new Random().nextInt()).toString();
 
         Device device = new Device(id, samplingRate, latitude, longitude);
