@@ -31,6 +31,7 @@ class Slave(threading.Thread):
             measEntries = self.dataset["measurementEntries"]
 
             for i in range(self.datasetIdx, len(measEntries)):
+                print("measurementEntry: " + str(i))
 
                 if i == 0:
                     sI.injectAccelData(measEntries[i])
@@ -38,7 +39,7 @@ class Slave(threading.Thread):
                 EqInt = self.getQuakeIntegral(measEntries[i])
                 if EqInt > 0:
                     merge.addMeasurement(EqInt, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
-                    #print("New measurement: " + str(i) + " " + str(EqInt))
+                    print("New measurement: " + str(i) + " " + str(EqInt))
 
             self.datasetIdx = len(measEntries)
 
@@ -68,11 +69,23 @@ class Slave(threading.Thread):
             return 0
         #self.samplingrate = 60.0 # fix due to smartphone sensing framework
 
-        x = np.array(actDataset["accelerationX"])
-        y = np.array(actDataset["accelerationY"])
-        z = np.array(actDataset["accelerationZ"])
+        xdata = actDataset["accelerationX"]
+        ydata = actDataset["accelerationY"]
+        zdata = actDataset["accelerationZ"]
+
+        if xdata == None or ydata == None or zdata == None:
+            print("no valid data: None")
+            return 0
+
+        x = np.array(xdata)
+        y = np.array(ydata)
+        z = np.array(zdata)
+
+        #if x.all() == None or y.all() == None or z.all() == None:
+        #    return 0
 
         if sum(x) == 0 and sum(y) == 0 and sum(z) == 0:
+            print("no valid data: 0")
             return 0
 
         xyz = abs(x) + abs(y) + abs(z)
@@ -81,10 +94,13 @@ class Slave(threading.Thread):
         num_values_per_window = int(self.samplingrate * window_size_seconds) # 1/s * s = 1
 
         if num_values_per_window == 0:
+            print("no valid data: num_values_per_window = 0")
             return 0
 
         num_splits = int(xyz.size / num_values_per_window)
         splits = np.array_split(xyz, num_splits)
+
+        print("numsplits = " + str (num_splits))
 
         mean_array = np.zeros(num_splits)   # initialize
 
@@ -94,12 +110,16 @@ class Slave(threading.Thread):
         max_val = np.max(mean_array)
 
         if max_val == 0:
+            print("no valid data: max_val = 0")
             return 0
 
         factor = 1 / max_val
         mean_array = mean_array * factor
+        print("mean_array: " + str(mean_array))
 
         integral = np.trapz(mean_array)
+
+        print("i have result: " + str(integral))
 
         return integral
         
