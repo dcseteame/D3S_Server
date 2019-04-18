@@ -1,6 +1,6 @@
 import json
 
-SIMULATION = True
+SIMULATION = False
 
 data = []
 index = 0
