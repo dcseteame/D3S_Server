@@ -25,9 +25,9 @@ class Neuron(threading.Thread):
             if self.weight < 0:
                 self.weight = 0
                 
-            if self.weight > 0:
-                print(self.weight)
-                
+            #if self.weight > 0:
+            #    print(self.weight)
+
             if self.weight > self.bias:
                 self.FireState = True
                 print("FIRE")

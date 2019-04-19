@@ -7,8 +7,6 @@ import merge
 import simulationInjection as sI
 from debug import dlog
 
-window_size = 500 # milliseconds
-
 class Slave(threading.Thread):
 
     URI = ""
@@ -20,6 +18,11 @@ class Slave(threading.Thread):
     stopsig = False
 
     def run(self):
+        # ignore old data
+        self.pollForData()
+        measEntries = self.dataset["measurementEntries"]
+        self.datasetIdx = len(measEntries)
+
         while True:
             print("Hi, I am " + threading.currentThread().getName())
             if self.stopsig == True:
@@ -33,13 +36,13 @@ class Slave(threading.Thread):
             for i in range(self.datasetIdx, len(measEntries)):
                 dlog("measurementEntry: " + str(i))
 
-                if i == 0:
-                    sI.injectAccelData(measEntries[i])
+                Mean, Std = self.getMeanStd(measEntries[i])
+                dlog("Mean Value = " + str(Mean))
+                dlog("Std Value = " + str(Std))
 
-                EqInt = self.getMeanValue(measEntries[i])
-                if EqInt > 0:
-                    merge.addMeasurement(EqInt, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
-                    dlog("New measurement: " + str(i) + " " + str(EqInt))
+                if Std > 0.01:
+                    # FIXME:
+                    merge.addMeasurement(1, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
 
             self.datasetIdx = len(measEntries)
             time.sleep(1)
@@ -58,7 +61,7 @@ class Slave(threading.Thread):
         r = requests.get(self.URI + "/" + self.UID + "?projection=deviceProjection")
         self.dataset = json.loads(r.text)
     
-    def getMeanValue(self, actDataset):
+    def getMeanStd(self, actDataset):
         if self.samplingrate == 0:
             return 0
 
@@ -79,4 +82,4 @@ class Slave(threading.Thread):
             return 0
 
         xyz = abs(x) + abs(y) + abs(z)
-        return xyz.mean()
+        return xyz.mean(), xyz.std()
