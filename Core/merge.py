@@ -41,24 +41,13 @@ class Merge(threading.Thread):
     
     def run(self):
         while True:
-            minEntries = 3  # TODO: set dynamically based on registered devices
-
-            entriesToProcess = []
             for entry in measEntries:
-                # XXX: ignore time for debug reasons
-                #if (currentTime() - entry.Time) < 5000:
-                if True:
-                    entriesToProcess.append(entry)
-                else:
-                    measEntries.remove(entry)  # XXX: does it work?
+                self.n.add(entry.Weight)
             
-            if len(entriesToProcess) > 0:
-                for entry in entriesToProcess:
-                    self.n.add(entry.Weight)
-            
+            measEntries.clear()
+
             if self.n.FireState == True:
                 print("EARTHQUAKE!!!")
                 requests.get(self.URI + "/warnings?description=Earthquake")
 
             time.sleep(1)
-

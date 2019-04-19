@@ -3,6 +3,7 @@ import json
 import threading
 import time
 from slave import Slave
+import neuron
 
 class Poll(threading.Thread):
 
@@ -36,6 +37,7 @@ class Poll(threading.Thread):
                     self.devListAct.append( device )
                     newSlave = Slave(self.URI, device[0], device[1])
                     self.deviceMap[device[0]] = newSlave
+                    neuron.updateBias(len(self.devListAct))
                     newSlave.start()
                     # create new slave
             
@@ -44,6 +46,7 @@ class Poll(threading.Thread):
                     removedDevice = self.deviceMap[device[0]]
                     removedDevice.stop()
                     self.devListAct.remove(device)
+                    neuron.updateBias(len(self.devListAct))
                     # shut down slave
             
             print(self.devListAct)

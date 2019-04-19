@@ -24,7 +24,7 @@ class Slave(threading.Thread):
         self.datasetIdx = len(measEntries)
 
         while True:
-            print("Hi, I am " + threading.currentThread().getName())
+            print("Hi, I am slave " + threading.currentThread().getName())
             if self.stopsig == True:
                 print("Goodbye!")
                 return
@@ -40,7 +40,7 @@ class Slave(threading.Thread):
                 dlog("Mean Value = " + str(Mean))
                 dlog("Std Value = " + str(Std))
 
-                if Std > 0.01:
+                if Std > 0.015:
                     # FIXME:
                     merge.addMeasurement(1, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
 

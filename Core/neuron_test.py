@@ -4,6 +4,4 @@ import time
 x = Neuron()
 x.start()
 
-while x.FireState == False:
-    x.add(1)
-    time.sleep(1)
+x.add(10)
