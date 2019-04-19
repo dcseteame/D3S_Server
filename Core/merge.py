@@ -2,6 +2,7 @@ import threading
 import requests
 import time
 import numpy as np
+from debug import dlog
 
 PARAM_detectionVariance = 2
 
@@ -25,10 +26,10 @@ def addMeasurement(EqInt, Time, coordLong, coordLat):
     entry.Lat = coordLat
     measEntries.append(entry)
 
-    print("Measurement added: ")
-    #print("Time: " + str(Time))
+    dlog("Measurement added: ")
+    dlog("Time: " + str(Time))
     #print("Coordinates: " + str(coordLong) + " / " + str(coordLat))
-    print("Intensity: " + str(EqInt))
+    dlog("Intensity: " + str(EqInt))
 
 class Merge(threading.Thread):
     URI = ""
@@ -50,6 +51,12 @@ class Merge(threading.Thread):
                 else:
                     measEntries.remove(entry)  # XXX: does it work?
             
+            if len(entriesToProcess) > 0:
+                for entry in entriesToProcess:
+
+
+
+
             # calculate variance of EqInt, Lat, Long of each element of entriesToProcess
             if len(entriesToProcess) >= minEntries:
                 EqIntMean = 0
