@@ -53,7 +53,7 @@ class Merge(threading.Thread):
             
             if len(entriesToProcess) > 0:
                 for entry in entriesToProcess:
-
+                    print("test")
 
 
 
