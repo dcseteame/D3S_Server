@@ -42,7 +42,7 @@ class Slave(threading.Thread):
 
                 if Std > 0.015:
                     # FIXME: Test with NormMean instead of 1
-                    merge.addMeasurement(1, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
+                    merge.addMeasurement(NormMean, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
 
             self.datasetIdx = len(measEntries)
             time.sleep(1)
