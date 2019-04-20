@@ -36,12 +36,12 @@ class Slave(threading.Thread):
             for i in range(self.datasetIdx, len(measEntries)):
                 dlog("measurementEntry: " + str(i))
 
-                Mean, Std = self.getMeanStd(measEntries[i])
-                dlog("Mean Value = " + str(Mean))
+                NormMean, Std = self.getMeanStd(measEntries[i])
+                dlog("Normalized Mean Value = " + str(NormMean))
                 dlog("Std Value = " + str(Std))
 
                 if Std > 0.015:
-                    # FIXME:
+                    # FIXME: Test with NormMean instead of 1
                     merge.addMeasurement(1, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
 
             self.datasetIdx = len(measEntries)
@@ -82,4 +82,14 @@ class Slave(threading.Thread):
             return 0
 
         xyz = abs(x) + abs(y) + abs(z)
-        return xyz.mean(), xyz.std()
+        std = xyz.std()
+
+        max_val = xyz.max()
+        if max_val == 0:
+            dlog("no valid data: max_val = 0")
+            return 0
+        
+        factor = 1 / max_val
+        xyz = xyz * factor  # normalize
+
+        return xyz.mean(), std
