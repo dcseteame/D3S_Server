@@ -3,10 +3,14 @@ import time
 import numpy as np
 
 bias = 999999
+device_factor = 0.35
 
 def updateBias(num_reg_devices):
     global bias
-    bias = num_reg_devices * 0.7 # TODO
+    if num_reg_devices > 1:
+        bias = num_reg_devices * device_factor # TODO
+    else:
+        bias = device_factor * 2
     print("New bias: " + str(bias))
 
 class Neuron(threading.Thread):
@@ -36,7 +40,7 @@ class Neuron(threading.Thread):
 
             if self.weight > bias:
                 self.FireState = True
-                print("FIRE")
+                #print("FIRE")
             else:
                 self.FireState = False
                 

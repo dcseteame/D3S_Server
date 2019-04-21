@@ -49,6 +49,6 @@ class Poll(threading.Thread):
                     neuron.updateBias(len(self.devListAct))
                     # shut down slave
             
-            print(self.devListAct)
+            #print(self.devListAct)
             
             time.sleep(1)

@@ -24,7 +24,7 @@ class Slave(threading.Thread):
         self.datasetIdx = len(measEntries)
 
         while True:
-            print("Hi, I am slave " + threading.currentThread().getName())
+            #print("Hi, I am slave " + threading.currentThread().getName())
             if self.stopsig == True:
                 print("Goodbye!")
                 return
@@ -34,15 +34,17 @@ class Slave(threading.Thread):
             measEntries = self.dataset["measurementEntries"]
 
             for i in range(self.datasetIdx, len(measEntries)):
-                dlog("measurementEntry: " + str(i))
+                #dlog("measurementEntry: " + str(i))
 
-                NormMean, Std = self.getMeanStd(measEntries[i])
-                dlog("Normalized Mean Value = " + str(NormMean))
-                dlog("Std Value = " + str(Std))
+                try:
+                    NormMean, Std = self.getMeanStd(measEntries[i])
+                    dlog("%s: mean = %.2f, std = %.3f" % (threading.currentThread().name, NormMean, Std))
 
-                if Std > 0.015:
-                    # FIXME: Test with NormMean instead of 1
-                    merge.addMeasurement(NormMean, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
+                    if Std > 0.015:
+                        # FIXME: Test with NormMean instead of 1
+                        merge.addMeasurement(NormMean, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
+                except:
+                    print("evaluation error")
 
             self.datasetIdx = len(measEntries)
             time.sleep(1)
@@ -59,7 +61,10 @@ class Slave(threading.Thread):
     def pollForData(self):
         # poll for devices
         r = requests.get(self.URI + "/" + self.UID + "?projection=deviceProjection")
-        self.dataset = json.loads(r.text)
+        try:
+            self.dataset = json.loads(r.text)
+        except:
+            print(r.text)
     
     def getMeanStd(self, actDataset):
         if self.samplingrate == 0:

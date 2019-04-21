@@ -25,10 +25,7 @@ def addMeasurement(Weight, Time, coordLong, coordLat):
     entry.Lat = coordLat
     measEntries.append(entry)
 
-    dlog("Measurement added: ")
-    dlog("Time: " + str(Time))
-    #print("Coordinates: " + str(coordLong) + " / " + str(coordLat))
-    dlog("Intensity: " + str(Weight))
+    dlog("Measurement added")
 
 class Merge(threading.Thread):
     URI = ""
@@ -48,6 +45,10 @@ class Merge(threading.Thread):
 
             if self.n.FireState == True:
                 print("EARTHQUAKE!!!")
-                requests.get(self.URI + "/warnings?description=Earthquake")
+                requests.get(self.URI + "/warning?description=Earthquake")
+            else:
+                requests.get(self.URI + "/warning?description=ok")
 
-            time.sleep(1)
+            # TODO: low pass filter the switch between both warnings
+
+            time.sleep(0.1)
