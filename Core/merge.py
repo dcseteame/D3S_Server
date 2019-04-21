@@ -29,12 +29,14 @@ def addMeasurement(Weight, Time, coordLong, coordLat):
 
 class Merge(threading.Thread):
     URI = ""
+    eqc = 0 # counter
 
     def __init__(self, __uri):
         threading.Thread.__init__(self)
         self.URI = __uri
         self.n = Neuron()
         self.n.start()
+        self.eqc = 0
     
     def run(self):
         while True:
@@ -44,11 +46,15 @@ class Merge(threading.Thread):
             measEntries.clear()
 
             if self.n.FireState == True:
+                self.eqc = self.eqc + 1
+            else:
+                if self.eqc > 0:
+                    self.eqc = self.eqc - 1
+
+            if self.eqc > 10:
                 print("EARTHQUAKE!!!")
                 requests.get(self.URI + "/warning?description=Earthquake")
-            else:
+            elif self.eqc < 5:
                 requests.get(self.URI + "/warning?description=ok")
-
-            # TODO: low pass filter the switch between both warnings
 
             time.sleep(0.1)

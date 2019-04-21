@@ -24,7 +24,7 @@ class Slave(threading.Thread):
         self.datasetIdx = len(measEntries)
 
         while True:
-            #print("Hi, I am slave " + threading.currentThread().getName())
+            #dlog("Hi, I am slave " + threading.currentThread().getName())
             if self.stopsig == True:
                 print("Goodbye!")
                 return
@@ -41,8 +41,7 @@ class Slave(threading.Thread):
                     dlog("%s: mean = %.2f, std = %.3f" % (threading.currentThread().name, NormMean, Std))
 
                     if Std > 0.015:
-                        # FIXME: Test with NormMean instead of 1
-                        merge.addMeasurement(NormMean, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
+                        merge.addMeasurement(1, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
                 except:
                     print("evaluation error")
 

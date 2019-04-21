@@ -3,7 +3,8 @@ import time
 import numpy as np
 
 bias = 999999
-device_factor = 0.35
+device_factor = 0.7
+max_weight = lambda: (bias * 2)
 
 def updateBias(num_reg_devices):
     global bias
@@ -25,7 +26,7 @@ class Neuron(threading.Thread):
         self.weight = 0
         self.weight0 = self.weight
         self.FireState = False
-    
+
     def run(self):
         global bias
         while True:
