@@ -47,6 +47,8 @@ class Merge(threading.Thread):
 
             if self.n.FireState == True:
                 self.eqc = self.eqc + 1
+                if self.eqc > 20:
+                    self.eqc = 20
             else:
                 if self.eqc > 0:
                     self.eqc = self.eqc - 1

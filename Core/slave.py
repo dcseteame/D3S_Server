@@ -37,10 +37,10 @@ class Slave(threading.Thread):
                 #dlog("measurementEntry: " + str(i))
 
                 try:
-                    NormMean, Std = self.getMeanStd(measEntries[i])
-                    dlog("%s: mean = %.2f, std = %.3f" % (threading.currentThread().name, NormMean, Std))
+                    Mean, Std = self.getMeanStd(measEntries[i])
+                    dlog("%s: mean = %.2f, std = %.3f" % (threading.currentThread().name, Mean, Std))
 
-                    if Std > 0.015:
+                    if Std > 0.05:
                         merge.addMeasurement(1, self.dataset["measurementEntries"][i]["time"], self.dataset["longitude"], self.dataset["latitude"])
                 except:
                     print("evaluation error")
@@ -88,12 +88,12 @@ class Slave(threading.Thread):
         xyz = abs(x) + abs(y) + abs(z)
         std = xyz.std()
 
-        max_val = xyz.max()
-        if max_val == 0:
-            dlog("no valid data: max_val = 0")
-            return 0
+        #max_val = xyz.max()
+        #if max_val == 0:
+        #    dlog("no valid data: max_val = 0")
+        #    return 0
         
-        factor = 1 / max_val
-        xyz = xyz * factor  # normalize
+        #factor = 1 / max_val
+        #xyz = xyz * factor  # normalize
 
         return xyz.mean(), std

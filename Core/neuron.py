@@ -4,7 +4,6 @@ import numpy as np
 
 bias = 999999
 device_factor = 0.7
-max_weight = lambda: (bias * 2)
 
 def updateBias(num_reg_devices):
     global bias
@@ -30,8 +29,11 @@ class Neuron(threading.Thread):
     def run(self):
         global bias
         while True:
-            d_weight = -(1/self.T) * self.weight0 * np.exp(-(1/self.T * self.step))
+            #d_weight = -(1/self.T) * self.weight0 * np.exp(-(1/self.T * self.step))
+            d_weight = -0.1
             self.weight = self.weight + d_weight
+            if self.weight > bias*2:
+                self.weight = bias*2
             
             if self.weight < 0:
                 self.weight = 0
@@ -41,7 +43,7 @@ class Neuron(threading.Thread):
 
             if self.weight > bias:
                 self.FireState = True
-                #print("FIRE")
+                print("FIRE")
             else:
                 self.FireState = False
                 
